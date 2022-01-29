@@ -2,18 +2,21 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from random import randint
-from functions import *
+import os
 import requests
 from bs4 import BeautifulSoup
 import csv
 import datetime
 
+
+#DRIVER PATH
+GECKO='''C:/Users/yamil/Desktop/geckodriver.exe'''
 #HOW WILL THE FILE NAMED
 CSV_FILE_NAME="SEARCH.csv"
 #HOW MANY PAGES WILL BE SCRAPPED
 NUMBER_OF_PAGES=5
 #WHAT ARE WE GOING TO SEARCH
-SEARCH_CRITERIA='sennheiser'
+SEARCH_CRITERIA='kreuzberg'
 
 def CaptureData(link,page_n):
     print(('Capturing data in {}').format(link))
@@ -275,18 +278,29 @@ def NextPage(browser):
     ClickNext.click()
 
 def NumericPage(browser):
+    #Clicks on the "NEXT" button
     print('Click next button')
-    continue_link = browser.find_element_by_link_text('Siguiente')
-
-    continue_link.click()
+    try:
+        continue_link = browser.find_element_by_link_text('Siguiente')
+        continue_link.click()
+        return True
+    except:
+        print("No existen más resultados")
+        return False
  
 def run():
     #OPEN THE BROWSER
-    browser = webdriver.Firefox(executable_path='/home/yamil/geckodriver')
+    browser = webdriver.Firefox(executable_path=GECKO)
     browser.get('http://www.mercadolibre.com.ar/')
 
+    #SLEEP RANDOM TIME BETWEEN 1 AND 6 SECS.
+    sleep(Sleep())
+
     #COOKIE DISCLAIMER BUTTON
-    CookieDisclaimer(browser)
+    try:
+        CookieDisclaimer(browser)
+    except:
+        pass
     
     #SLEEP RANDOM TIME BETWEEN 1 AND 6 SECS.
     sleep(Sleep())
@@ -297,6 +311,9 @@ def run():
     #SLEEP RANDOM TIME BETWEEN 1 AND 6 SECS.
     sleep(Sleep())
     
+    if not os.path.exists(CSV_FILE_NAME):
+    #If the CSV file doesn't exists. Create it, else pass.
+        CreateCSV()
 
     for x in range(NUMBER_OF_PAGES):
         link=browser.current_url
@@ -305,7 +322,14 @@ def run():
         data=CaptureData(link,x+1)
         UpdateCSV(data)
         ScrollDown(browser)
-        NumericPage(browser)
+
+        if NumericPage(browser) == True:
+            #If there are no more results, breaks the loop.
+            pass
+        else:
+            print('------------\n')
+            break
+
         sleep(Sleep())
         print('------------\n')
     
