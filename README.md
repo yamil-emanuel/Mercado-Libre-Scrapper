@@ -1,21 +1,13 @@
 # Mercado-Libre-Scrapper
-Mercadolibre's webScrapper developed using Selenium and Beautifulsoups. Exports a csv file with the collected data.
+Exports a csv file with the collected data. It's a Mercadolibre's webScrapper developed using Selenium and Beautifulsoups as a content parser. 
+For every excecution it returns a data table with the following data:
+Date, Page n°, title, price, discount price (if exists), discount percentage, if the shop is verified or not, payment split/if is avaiable, Reviews amount, Rating, colors available, highlights, estimed arrival time, deliver type, tags, post url.
 
-See requieriments (bs4, xlmx, requests, selenium + webdriver Mozilla Firefox)
+#REQUIERIMENTS
+Please install all the dependencies before running.
 
-MAIN PARAMETERS:
-
-#DRIVER PATH
-GECKO='''C:/Users/yamil/Desktop/geckodriver.exe'''
-
-#OUTPUT'S FILE NAME.
-CSV_FILE_NAME="SEARCH.csv"
-
-#HOW MANY PAGES WILL BE SCRAPPED
-NUMBER_OF_PAGES=5
-
-#SEARCH CRITERIA
-SEARCH_CRITERIA='sennheiser'
-    
-#Scraps the data of every search result page.
-["FECHA","PÁGINA","TITULO","PRECIO","PRECIO CON DESCUENTO","DESCUENTO %","TIENDA OFICIAL","CANTIDAD CUOTAS","REVIEWS","STARS","COLORES DISPONIBLES","FULL","HIGHLIGHTS","FECHA ARRIVO","TIPO DE ENVÍO","TAGS","URL"]
+#USAGE
+1)The user must fill the following fields:
+    SEARCH_CRITERIA= [str:WHAT ARE WE GOING TO SEARCH]
+    NUMBER_OF_PAGES=[int:HOW MANY PAGES WILL BE SCRAPPED]
+2)Run the code.
