@@ -8,15 +8,19 @@ from bs4 import BeautifulSoup
 import csv
 import datetime
 
+#USER'S INPUT
+SEARCH_CRITERIA='juego uno'#WHAT ARE WE GOING TO SEARCH
+NUMBER_OF_PAGES=5#HOW MANY PAGES WILL BE SCRAPPED
 
-#DRIVER PATH
-GECKO='''C:/Users/yamil/Desktop/geckodriver.exe'''
-#HOW WILL THE FILE NAMED
-CSV_FILE_NAME="SEARCH.csv"
-#HOW MANY PAGES WILL BE SCRAPPED
-NUMBER_OF_PAGES=5
-#WHAT ARE WE GOING TO SEARCH
-SEARCH_CRITERIA='kreuzberg'
+#=============================================================================#
+#CONSTANTS !
+
+TODAY=datetime.datetime.today().strftime('%Y-%m-%d')
+GECKO='''C:/Users/yamil/geckodriver.exe''' #DRIVER PATH
+CSV_FILE_NAME=f"{SEARCH_CRITERIA}_data_{TODAY}.csv" #HOW WILL THE FILE NAMED
+
+#=============================================================================#
+
 
 def CaptureData(link,page_n):
     print(('Capturing data in {}').format(link))
@@ -285,9 +289,13 @@ def NumericPage(browser):
         continue_link.click()
         return True
     except:
-        print("No existen más resultados")
+        print("There aren't any results left.")
         return False
- 
+
+
+#=============================================================================#
+
+
 def run():
     #OPEN THE BROWSER
     browser = webdriver.Firefox(executable_path=GECKO)
@@ -317,7 +325,7 @@ def run():
 
     for x in range(NUMBER_OF_PAGES):
         link=browser.current_url
-        print(('Visiting page N°{}').format(x))
+        print(('Visiting page N°{}/{}').format(x,NUMBER_OF_PAGES))
 
         data=CaptureData(link,x+1)
         UpdateCSV(data)
@@ -335,5 +343,6 @@ def run():
     
     browser.quit()
         
+#=============================================================================#
 
 run()
